@@ -1,163 +1,114 @@
-# AI Hedge Fund
+# AI Hedge Fund - Документация
 
-This is a proof of concept for an AI-powered hedge fund.  The goal of this project is to explore the use of AI to make trading decisions.  This project is for **educational** purposes only and is not intended for real trading or investment.
+## Описание проекта
+AI Hedge Fund - это концептуальный проект хедж-фонда, управляемого искусственным интеллектом. Проект использует различных AI-агентов для анализа рынка и принятия инвестиционных решений.
 
-This system employs several agents working together:
+## Архитектура системы
 
-1. Bill Ackman Agent - Uses Bill Ackman's principles to generate trading signals
-2. Warren Buffett Agent - Uses Warren Buffett's principles to generate trading signals
-3. Valuation Agent - Calculates the intrinsic value of a stock and generates trading signals
-4. Sentiment Agent - Analyzes market sentiment and generates trading signals
-5. Fundamentals Agent - Analyzes fundamental data and generates trading signals
-6. Technicals Agent - Analyzes technical indicators and generates trading signals
-7. Risk Manager - Calculates risk metrics and sets position limits
-8. Portfolio Manager - Makes final trading decisions and generates orders
+### 1. Агенты (папка `/src/agents`)
+Система использует несколько специализированных агентов:
 
-<img width="1117" alt="Screenshot 2025-02-09 at 11 26 14 AM" src="https://github.com/user-attachments/assets/16509cc2-4b64-4c67-8de6-00d224893d58" />
+#### 1.1 Инвестиционные аналитики
+- **Bill Ackman Agent** (`bill_ackman.py`) - агент, использующий инвестиционные принципы Билла Экмана
+- **Warren Buffett Agent** (`warren_buffett.py`) - агент, следующий стратегиям Уоррена Баффета
+- **Valuation Agent** (`valuation.py`) - агент для оценки внутренней стоимости акций
+- **Sentiment Agent** (`sentiment.py`) - агент анализа рыночных настроений
+- **Fundamentals Agent** (`fundamentals.py`) - агент анализа фундаментальных показателей
+- **Technical Agent** (`technicals.py`) - агент технического анализа
 
+#### 1.2 Управляющие агенты
+- **Portfolio Manager** (`portfolio_manager.py`) - агент управления портфелем
+- **Risk Manager** (`risk_manager.py`) - агент управления рисками
 
-**Note**: the system simulates trading decisions, it does not actually trade.
+### 2. Основные компоненты
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/virattt?style=social)](https://twitter.com/virattt)
+#### 2.1 Граф принятия решений (`/src/graph`)
+- Реализует последовательность принятия решений между агентами
+- Использует библиотеку `langgraph` для организации рабочего процесса
+- Определяет порядок взаимодействия агентов
 
-## Disclaimer
+#### 2.2 Данные (`/src/data`)
+- Модули для работы с финансовыми данными
+- Получение исторических данных о ценах акций
+- Работа с фундаментальными показателями компаний
 
-This project is for **educational and research purposes only**.
+#### 2.3 Инструменты (`/src/tools`)
+- Вспомогательные инструменты для работы с API
+- Утилиты для обработки данных
 
-- Not intended for real trading or investment
-- No warranties or guarantees provided
-- Past performance does not indicate future results
-- Creator assumes no liability for financial losses
-- Consult a financial advisor for investment decisions
+#### 2.4 Утилиты (`/src/utils`)
+- Функции визуализации
+- Форматирование вывода
+- Отслеживание прогресса
+- Вспомогательные функции
 
-By using this software, you agree to use it solely for learning purposes.
+## Как использовать
 
-## Table of Contents
-- [Setup](#setup)
-- [Usage](#usage)
-  - [Running the Hedge Fund](#running-the-hedge-fund)
-  - [Running the Backtester](#running-the-backtester)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Feature Requests](#feature-requests)
-- [License](#license)
-
-## Setup
-
-Clone the repository:
+### 1. Установка
 ```bash
+# Клонировать репозиторий
 git clone https://github.com/virattt/ai-hedge-fund.git
 cd ai-hedge-fund
+
+# Создать виртуальное окружение и активировать его
+python3 -m venv venv
+source venv/bin/activate
+
+# Установить зависимости
+pip install python-dotenv openai langchain pandas numpy requests langgraph colorama questionary rich tabulate langchain-openai
 ```
 
-1. Install Poetry (if not already installed):
+### 2. Настройка окружения
+Создайте файл `.env` в корневой директории проекта со следующими переменными:
+```
+OPENAI_API_KEY=ваш-ключ-openai
+GROQ_API_KEY=ваш-ключ-groq
+FINANCIAL_DATASETS_API_KEY=ваш-ключ-financial-datasets
+```
+
+### 3. Запуск
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+python src/main.py --ticker AAPL,MSFT,NVDA
 ```
 
-2. Install dependencies:
-```bash
-poetry install
-```
+Дополнительные параметры:
+- `--ticker`: список тикеров акций через запятую
+- `--show-reasoning`: показывать рассуждения агентов (опционально)
 
-3. Set up your environment variables:
-```bash
-# Create .env file for your API keys
-cp .env.example .env
-```
+## Процесс работы системы
 
-4. Set your API keys:
-```bash
-# For running LLMs hosted by openai (gpt-4o, gpt-4o-mini, etc.)
-# Get your OpenAI API key from https://platform.openai.com/
-OPENAI_API_KEY=your-openai-api-key
+1. **Инициализация**
+   - Загрузка конфигурации из `.env`
+   - Создание экземпляров всех агентов
+   - Инициализация графа принятия решений
 
-# For running LLMs hosted by groq (deepseek, llama3, etc.)
-# Get your Groq API key from https://groq.com/
-GROQ_API_KEY=your-groq-api-key
+2. **Анализ**
+   - Каждый агент анализирует данные в своей специализации
+   - Агенты используют различные модели LLM для анализа
 
-# For getting financial data to power the hedge fund
-# Get your Financial Datasets API key from https://financialdatasets.ai/
-FINANCIAL_DATASETS_API_KEY=your-financial-datasets-api-key
-```
+3. **Принятие решений**
+   - Portfolio Manager собирает рекомендации всех агентов
+   - Risk Manager проверяет решения на соответствие риск-параметрам
+   - Формируется финальное инвестиционное решение
 
-**Important**: You must set `OPENAI_API_KEY`, `GROQ_API_KEY`, or `ANTHROPIC_API_KEY` for the hedge fund to work.  If you want to use LLMs from all providers, you will need to set all API keys.
+4. **Вывод результатов**
+   - Форматированный вывод решений
+   - Визуализация графиков (при необходимости)
+   - Детальное обоснование решений (при включенном флаге `show-reasoning`)
 
-Financial data for AAPL, GOOGL, MSFT, NVDA, and TSLA is free and does not require an API key.
+## Ограничения и предупреждения
 
-For any other ticker, you will need to set the `FINANCIAL_DATASETS_API_KEY` in the .env file.
+1. Система предназначена только для образовательных целей
+2. Не использовать для реальной торговли
+3. Требуется действующий API ключ OpenAI
+4. Для работы с дополнительными тикерами требуется API ключ Financial Datasets
 
-## Usage
+## Технический стек
 
-### Running the Hedge Fund
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA
-```
-
-**Example Output:**
-<img width="992" alt="Screenshot 2025-01-06 at 5 50 17 PM" src="https://github.com/user-attachments/assets/e8ca04bf-9989-4a7d-a8b4-34e04666663b" />
-
-You can also specify a `--show-reasoning` flag to print the reasoning of each agent to the console.
-
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --show-reasoning
-```
-You can optionally specify the start and end dates to make decisions for a specific time period.
-
-```bash
-poetry run python src/main.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01 
-```
-
-### Running the Backtester
-
-```bash
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA
-```
-
-**Example Output:**
-<img width="941" alt="Screenshot 2025-01-06 at 5 47 52 PM" src="https://github.com/user-attachments/assets/00e794ea-8628-44e6-9a84-8f8a31ad3b47" />
-
-You can optionally specify the start and end dates to backtest over a specific time period.
-
-```bash
-poetry run python src/backtester.py --ticker AAPL,MSFT,NVDA --start-date 2024-01-01 --end-date 2024-03-01
-```
-
-## Project Structure 
-```
-ai-hedge-fund/
-├── src/
-│   ├── agents/                   # Agent definitions and workflow
-│   │   ├── bill_ackman.py        # Bill Ackman agent
-│   │   ├── fundamentals.py       # Fundamental analysis agent
-│   │   ├── portfolio_manager.py  # Portfolio management agent
-│   │   ├── risk_manager.py       # Risk management agent
-│   │   ├── sentiment.py          # Sentiment analysis agent
-│   │   ├── technicals.py         # Technical analysis agent
-│   │   ├── valuation.py          # Valuation analysis agent
-│   │   ├── warren_buffett.py     # Warren Buffett agent
-│   ├── tools/                    # Agent tools
-│   │   ├── api.py                # API tools
-│   ├── backtester.py             # Backtesting tools
-│   ├── main.py # Main entry point
-├── pyproject.toml
-├── ...
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-**Important**: Please keep your pull requests small and focused.  This will make it easier to review and merge.
-
-## Feature Requests
-
-If you have a feature request, please open an [issue](https://github.com/virattt/ai-hedge-fund/issues) and make sure it is tagged with `enhancement`.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Язык программирования**: Python 3.13+
+- **Основные библиотеки**:
+  - LangChain - для работы с LLM
+  - OpenAI - для доступа к GPT моделям
+  - Pandas - для обработки данных
+  - Rich - для форматированного вывода
+  - LangGraph - для организации рабочего процесса

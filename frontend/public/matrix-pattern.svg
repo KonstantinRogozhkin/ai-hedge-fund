@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="matrix" width="32" height="32" patternUnits="userSpaceOnUse">
+      <text x="0" y="8" fill="currentColor" font-family="monospace" font-size="8">10</text>
+      <text x="16" y="16" fill="currentColor" font-family="monospace" font-size="8">01</text>
+      <text x="8" y="24" fill="currentColor" font-family="monospace" font-size="8">11</text>
+      <text x="24" y="32" fill="currentColor" font-family="monospace" font-size="8">00</text>
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill="url(#matrix)"/>
+</svg>

@@ -1,7 +1,61 @@
 # Bill Ackman Agent
 
 ## Общее описание
-Bill Ackman Agent - это специализированный агент, который анализирует акции, используя инвестиционные принципы Билла Экмана. Агент фокусируется на поиске высококачественных компаний с устойчивым конкурентным преимуществом, торгующихся со значительным дисконтом к их внутренней стоимости.
+Bill Ackman Agent - это специализированный агент, который анализирует акции, используя инвестиционные принципы Билла Экмана. Агент реализует стратегию активного инвестирования, фокусируясь на поиске высококачественных компаний с устойчивым конкурентным преимуществом, торгующихся со значительным дисконтом к их внутренней стоимости.
+
+I added a new agent to the AI hedge fund.
+
+The Bill Ackman analyst.
+
+Designed using Mr. Ackman's philosophy:
+1 • are cash flows stable?
+2 • does the company have a moat?
+3 • is there long-term growth?
+4 • how strong is the balance sheet?
+5 • is management quality high?
+6 • is the valuation reasonable?
+
+This is our second investor agent.
+
+You can pair it with the Warren Buffett agent.
+
+The vision is to keep adding more agents that mimic great investors.
+
+Here is a breakdown of the Bill Ackman agent:
+
+1. Free cash flows: Analyzes 5 years of cash flow data, checking for positive and growing free cash flow generation. A positive FCF earns points in the scoring system.
+
+2. Moat: Evaluates competitive advantage through operating margins (>15% indicates strong moat) and return on equity (>15% suggests brand/moat advantage).
+
+3. Long-term growth: Examines revenue consistency, operating margins, and ROE trends over time. Awards points for consistent revenue growth patterns.
+
+4. Balance sheet: Checks debt-to-equity ratios (<1.0 is preferred) and liabilities-to-assets ratio (<0.5 indicates strength). Also evaluates capital allocation via dividends and buybacks.
+
+5. Management quality: Assesses through capital allocation decisions and operational efficiency metrics like margins and returns.
+
+6. Valuation: Performs DCF analysis using 6% growth rate, 10% discount rate, and 15x terminal multiple. Seeks 30%+ margin of safety for highest conviction.
+
+I will keep adding more investor agents. 
+
+Let me know what else to add.
+
+## Архитектура
+Агент реализован как функция `bill_ackman_agent(state: AgentState)`, которая принимает состояние системы и возвращает инвестиционные решения. Основные компоненты:
+
+1. Сбор данных:
+   - Финансовые метрики (annual/ttm)
+   - Финансовые показатели
+   - Рыночные данные
+
+2. Анализ:
+   - Качество бизнеса
+   - Финансовая дисциплина
+   - Оценка стоимости
+   
+3. Принятие решений:
+   - LLM-based reasoning
+   - Генерация сигналов (bullish/bearish/neutral)
+   - Расчет уверенности в решении
 
 ## Основные компоненты анализа
 
@@ -13,19 +67,127 @@ Bill Ackman Agent - это специализированный агент, ко
 - Операционная маржинальность
 - Рентабельность активов и капитала
 
-#### Метрики:
-- Динамика выручки
-- Операционная маржа
-- Рентабельность капитала (ROE)
-- Рентабельность активов (ROA)
+#### Метрики и пороговые значения:
+- Динамика выручки (>10% годовой рост)
+- Операционная маржа (>15%)
+- Рентабельность капитала (ROE >15%)
+- Рентабельность активов (ROA >10%)
+- Стабильность маржинальности (отклонение <5%)
+
+#### Реализация:
+```python
+def analyze_business_quality(metrics: list, financial_line_items: list):
+    """
+    Анализ качества бизнеса на основе метрик и финансовых показателей
+    """
+    return {
+        'revenue_growth': float,
+        'margin_stability': float,
+        'profitability': float,
+        'overall_score': float
+    }
+```
 
 ### 2. Финансовая дисциплина (`analyze_financial_discipline`)
 #### Анализируемые факторы:
 - Структура и динамика долга
 - Политика возврата капитала акционерам
-- Эффективность использования капитала
+- Эффективность управления капиталом
 
-#### Метрики:
+#### Метрики и пороговые значения:
+- Коэффициент долга (Долг/EBITDA <3)
+- Коэффициент покрытия процентов (>3)
+- Доходность на инвестированный капитал (ROIC >10%)
+- Коэффициент выплаты дивидендов (<75%)
+
+#### Реализация:
+```python
+def analyze_financial_discipline(metrics: list, financial_line_items: list):
+    """
+    Оценка финансовой дисциплины компании
+    """
+    return {
+        'debt_management': float,
+        'capital_returns': float,
+        'capital_efficiency': float,
+        'overall_score': float
+    }
+```
+
+### 3. Оценка стоимости (`analyze_valuation`)
+#### Методология:
+- DCF (Дисконтирование денежных потоков)
+- Мультипликаторы (P/E, EV/EBITDA)
+- Сравнительный анализ
+
+#### Ключевые параметры:
+- Темп роста FCF
+- Стоимость капитала (WACC)
+- Терминальный рост
+
+#### Реализация:
+```python
+def analyze_valuation(financial_line_items: list, market_cap: float):
+    """
+    Оценка стоимости компании с использованием методов DCF и мультипликаторов
+    """
+    return {
+        'intrinsic_value': float,
+        'margin_of_safety': float,
+        'relative_valuation': dict,
+        'overall_score': float
+    }
+```## Процесс принятия решений
+
+### 1. Сбор и агрегация данных
+```python
+analysis_data = {
+    'business_quality': analyze_business_quality(metrics, financial_line_items),
+    'financial_discipline': analyze_financial_discipline(metrics, financial_line_items),
+    'valuation': analyze_valuation(financial_line_items, market_cap)
+}
+```
+
+### 2. LLM-based анализ
+```python
+def generate_ackman_output(ticker: str, analysis_data: dict, model_name: str, model_provider: str):
+    """
+    Генерация инвестиционных решений в стиле Билла Экмана
+    """
+    return BillAckmanSignal
+```
+
+### 3. Формат выходных данных
+```python
+class BillAckmanSignal(BaseModel):
+    signal: Literal["bullish", "bearish", "neutral"]
+    confidence: float        # 0.0 - 100.0
+    reasoning: str          # Обоснование решения
+```
+
+## Пример использования
+
+```python
+# Инициализация агента
+state = AgentState({
+    "data": {
+        "end_date": "2024-02-14",
+        "tickers": ["AAPL", "MSFT", "GOOGL"]
+    }
+})
+
+# Запуск анализа
+results = bill_ackman_agent(state)
+
+# Пример выходных данных
+{
+    "AAPL": {
+        "signal": "bullish",
+        "confidence": 85.5,
+        "reasoning": "Сильный бренд, высокая маржинальность, значительный потенциал роста"
+    }
+}
+```
 - Соотношение долга к собственному капиталу
 - Дивидендные выплаты
 - Обратный выкуп акций
