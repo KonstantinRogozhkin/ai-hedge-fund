@@ -1,9 +1,16 @@
 import { Container } from '../../../shared/ui/components/Container'
 import { Button } from '../../../shared/ui/components/Button'
+import { useState } from 'react'
 
 export const Hero = () => {
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  const handlePlayClick = () => {
+    setIsPlaying(true)
+  }
+
   return (
-    <div className="relative bg-[#080C14] text-white py-28 overflow-hidden">
+    <div className="relative bg-[#080C14] text-white py-20 overflow-hidden">
       {/* Фоновые элементы */}
       <div className="absolute inset-0">
         {/* Основной градиентный фон */}
@@ -38,7 +45,7 @@ export const Hero = () => {
       
       <Container>
         <div className="relative z-10 max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             {/* Статус */}
             <div className="inline-flex items-center px-4 py-2 rounded-lg bg-cyan-950/40 backdrop-blur-xl mb-8 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)] group hover:border-cyan-500/40 transition-all duration-300">
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-500/10 mr-2.5">
@@ -55,7 +62,7 @@ export const Hero = () => {
               Spy2Money AI
               <br />
               <span className="text-3xl sm:text-4xl lg:text-5xl mt-3 inline-block font-semibold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">
-                Хедж-фонд, управляемый AI Агентами
+                Анализ рынка с помощью AI агентов
               </span>
             </h1>
 
@@ -67,25 +74,59 @@ export const Hero = () => {
             </p>
 
             {/* Скриншот платформы */}
-            <div className="relative mt-12 mb-14 max-w-5xl mx-auto">
-              <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.15)] bg-[#0A1A2F]">
+            <div className="relative mt-8 mb-8 max-w-4xl mx-auto group">
+              <div className="relative w-full aspect-[16/8] rounded-xl overflow-hidden border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.15)] bg-[#0A1A2F]">
                 {/* Блик на стекле */}
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5" />
                 
-                {/* Скриншот */}
+                {/* Скриншот или Видео */}
                 <div className="relative w-full h-full">
-                  <img
-                    src="/main.png"
-                    alt="Spy2Money AI Trading Platform"
-                    className="w-full h-auto"
-                  />
-                  {/* Эффект затухания */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent from-50% via-[#0A1A2F]/80 via-75% to-[#0A1A2F]" />
+                  {isPlaying ? (
+                    <iframe
+                      src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+                      className="absolute inset-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <>
+                      <img
+                        src="/main.png"
+                        alt="Spy2Money AI Trading Platform"
+                        className="w-full h-auto"
+                      />
+                      {/* Кнопка Play */}
+                      <button
+                        onClick={handlePlayClick}
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-cyan-500/90 hover:bg-cyan-400 backdrop-blur-xl flex items-center justify-center transition-all duration-300 transform group-hover:scale-110 hover:scale-125 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.3)]"
+                      >
+                        <span className="sr-only">Смотреть демо</span>
+                        {/* Иконка Play */}
+                        <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                        {/* Ripple эффект */}
+                        <span className="absolute inset-0 rounded-full animate-ping bg-cyan-500/40" />
+                      </button>
+                      {/* Текст при наведении */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="px-6 py-3 bg-black/60 backdrop-blur-sm rounded-lg text-cyan-300 font-medium text-sm sm:text-base tracking-wide transform -translate-y-12">
+                          Смотреть демонстрацию
+                        </span>
+                      </div>
+                      {/* Эффект затухания */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent from-50% via-[#0A1A2F]/80 via-75% to-[#0A1A2F]" />
+                    </>
+                  )}
                 </div>
                 
-                {/* Блики по краям */}
-                <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#0A1A2F] to-transparent" />
-                <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#0A1A2F] to-transparent" />
+                {/* Блики по краям (только для скриншота) */}
+                {!isPlaying && (
+                  <>
+                    <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#0A1A2F] to-transparent" />
+                    <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#0A1A2F] to-transparent" />
+                  </>
+                )}
               </div>
             </div>
 

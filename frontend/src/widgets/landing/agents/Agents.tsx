@@ -1,6 +1,5 @@
 import { Container } from '../../../shared/ui/components/Container'
 import { AgentCard } from '../../../entities/agent/ui/AgentCard'
-import { FundamentalsAgent } from '../../../entities/agent/ui/agents/FundamentalsAgent'
 import { TechnicalAgent } from '../../../entities/agent/ui/agents/TechnicalAgent'
 
 
