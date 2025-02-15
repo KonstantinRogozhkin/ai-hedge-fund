@@ -151,7 +151,7 @@ export const Data = () => {
 
             {/* Заголовок */}
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-br from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-              Модуль данных
+              Модуль анализа данных
             </h2>
             <p className="text-lg sm:text-xl text-cyan-100/80 max-w-3xl mx-auto leading-relaxed font-light tracking-wide mb-16">
               Комплексная система для работы с

@@ -38,8 +38,34 @@ const getAgentIcon = (type: string) => {
       )
     case 'buffett':
       return (
+        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300">
+          <img
+            src="/avatars/WarrenBuffet2.jpg"
+            alt="Warren Buffett"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )
+    case 'ackman':
+      return (
+        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300">
+          <img
+            src="/avatars/Ackman_Bill_NEW.jpeg"
+            alt="Bill Ackman"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )
+    case 'graham':
+      return (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      )
+    case 'lynch':
+      return (
+        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
         </svg>
       )
     default:
@@ -51,67 +77,155 @@ const getAgentIcon = (type: string) => {
   }
 }
 
-const agents = [
+const getPersonalityAvatar = (type: string) => {
+  switch (type) {
+    case 'buffett':
+      return (
+        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.25)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]">
+          <img
+            src="/avatars/WarrenBuffet2.jpg"
+            alt="Warren Buffett"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )
+    case 'ackman':
+      return (
+        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.25)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]">
+          <img
+            src="/avatars/Ackman_Bill_NEW.jpeg"
+            alt="Bill Ackman"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )
+    case 'graham':
+      return (
+        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.25)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]">
+          <img
+            src="/avatars/benjamin-graham.jpg"
+            alt="Benjamin Graham"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )
+    case 'lynch':
+      return (
+        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.25)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]">
+          <img
+            src="/avatars/peter-lynch.jpg"
+            alt="Peter Lynch"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )
+    default:
+      return getAgentIcon('default')
+  }
+}
+
+const analyticalAgents = [
   {
     title: 'Fundamentals Agent',
     icon: 'fundamentals',
-    description: 'Анализирует фундаментальные показатели компаний для оценки их финансового здоровья',
+    description: 'Проводит комплексный анализ финансового здоровья компаний, оценивая прибыльность, рост, финансовую устойчивость и мультипликаторы',
     features: [
-      'Анализ прибыльности',
-      'Анализ роста',
-      'Финансовое здоровье',
-      'Оценочные мультипликаторы'
+      'Анализ рентабельности капитала и активов',
+      'Оценка темпов роста и стабильности',
+      'Анализ финансовой устойчивости',
+      'Расчет оценочных мультипликаторов',
+      'Прогнозирование будущих показателей'
     ]
   },
   {
     title: 'Technical Agent',
     icon: 'technical',
-    description: 'Проводит технический анализ рынка и отдельных инструментов',
+    description: 'Использует пять ключевых стратегий технического анализа для генерации торговых сигналов с учетом рыночных трендов и паттернов',
     features: [
-      'Следование тренду',
-      'Возврат к среднему',
-      'Моментум',
-      'Статистический арбитраж'
+      'Следование тренду (EMA, ADX)',
+      'Возврат к среднему (RSI, Bollinger)',
+      'Анализ моментума и волатильности',
+      'Статистический арбитраж',
+      'Комбинирование сигналов'
     ]
   },
   {
     title: 'Sentiment Agent',
     icon: 'sentiment',
-    description: 'Анализирует рыночные настроения и новостной фон',
+    description: 'Анализирует настроения рынка на основе новостей, инсайдерских сделок и социальных медиа для оценки рыночного сентимента',
     features: [
-      'Анализ новостей',
-      'Инсайдерские сделки',
-      'Рыночные настроения'
+      'Анализ новостного фона',
+      'Отслеживание инсайдерских сделок',
+      'Оценка рыночных настроений',
+      'Анализ социальных медиа',
+      'Определение трендов настроений'
     ]
   },
   {
     title: 'Portfolio Manager Agent',
     icon: 'portfolio',
-    description: 'Управляет портфелем и принимает торговые решения',
+    description: 'Принимает окончательные торговые решения на основе сигналов других агентов с учетом состояния портфеля и рисков',
     features: [
-      'Принятие торговых решений',
-      'Управление позициями',
-      'Исполнение сделок'
+      'Управление позициями портфеля',
+      'Исполнение торговых решений',
+      'Контроль маржинальных требований',
+      'Оптимизация размера позиций',
+      'Балансировка портфеля'
     ]
   },
   {
     title: 'Risk Manager Agent',
     icon: 'risk',
-    description: 'Контролирует риски и обеспечивает безопасность портфеля',
+    description: 'Обеспечивает безопасность портфеля через управление рисками, контроль позиций и диверсификацию',
     features: [
-      'Контроль рисков',
-      'Лимиты позиций',
-      'Диверсификация'
+      'Контроль размера позиций',
+      'Управление рисками портфеля',
+      'Анализ корреляций активов',
+      'Стресс-тестирование портфеля',
+      'Мониторинг лимитов риска'
     ]
   },
   {
+    title: 'Valuation Agent',
+    icon: 'fundamentals',
+    description: 'Выполняет детальную оценку стоимости компаний, используя методы DCF и Owner Earnings для определения справедливой цены',
+    features: [
+      'DCF анализ и моделирование',
+      'Расчет Owner Earnings',
+      'Оценка маржи безопасности',
+      'Анализ мультипликаторов',
+      'Прогнозирование роста'
+    ]
+  }
+];
+
+const personalityAgents = [
+  {
     title: 'Warren Buffett Agent',
     icon: 'buffett',
-    description: 'Реализует стратегию стоимостного инвестирования',
+    description: 'Реализует инвестиционную стратегию Уоррена Баффета, фокусируясь на поиске компаний с устойчивым конкурентным преимуществом и сильным брендом',
     features: [
-      'Стоимостное инвестирование',
-      'Качественный анализ бизнеса',
-      'Долгосрочная перспектива'
+      'Анализ конкурентных преимуществ',
+      'Оценка качества менеджмента',
+      'Расчет внутренней стоимости',
+      'Долгосрочное инвестирование',
+      'Консервативный подход к оценке'
+    ]
+  },
+  {
+    title: 'Bill Ackman Agent',
+    icon: 'ackman',
+    description: 'Использует активный инвестиционный подход Билла Экмана, ориентированный на поиск недооцененных качественных компаний с потенциалом роста',
+    features: [
+      'Анализ стабильности денежных потоков',
+      'Оценка рыночных преимуществ',
+      'Анализ долгосрочного роста',
+      'Проверка качества баланса',
+      'Оценка эффективности менеджмента'
     ]
   }
 ];
@@ -165,18 +279,41 @@ export const Agents = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <TechnicalAgent />
-            {agents.map((agent, index) => (
-              <AgentCard
-                key={index}
-                title={agent.title}
-                description={agent.description}
-                features={agent.features}
-                icon={getAgentIcon(agent.icon)}
-              />
-            ))}
+          {/* Analytical Agents Section */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+              Аналитические агенты
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <TechnicalAgent />
+              {analyticalAgents.map((agent, index) => (
+                <AgentCard
+                  key={index}
+                  title={agent.title}
+                  description={agent.description}
+                  features={agent.features}
+                  icon={getAgentIcon(agent.icon)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Personality Agents Section */}
+          <div>
+            <h3 className="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+              Агенты личности
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {personalityAgents.map((agent, index) => (
+                <AgentCard
+                  key={index}
+                  title={agent.title}
+                  description={agent.description}
+                  features={agent.features}
+                  icon={getPersonalityAvatar(agent.icon)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </Container>

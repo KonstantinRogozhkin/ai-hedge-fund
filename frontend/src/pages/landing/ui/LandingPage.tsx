@@ -38,9 +38,10 @@ export const LandingPage = () => (
     <div className="relative z-10">
       <Hero />
       <Agents />
+      <Architecture />
       <Data />
       <Features />
-      <Architecture />
+      
       <Research />
     </div>
 
